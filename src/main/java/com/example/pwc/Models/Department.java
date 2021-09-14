@@ -1,14 +1,15 @@
 package com.example.pwc.Models;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "`Department`")
 public class Department {
-    @Column(name = "id")
     private @Id long id;
-    @Column(name = "name")
     private String name;
+    @OneToMany(mappedBy = "department")
+    Set<User> employees;
 
     public Department(long id, String name){
         this.name = name;
@@ -31,6 +32,14 @@ public class Department {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<User> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<User> registrations) {
+        this.employees = registrations;
     }
 
     @Override

@@ -6,14 +6,11 @@ import java.util.*;
 @Entity
 @Table
 public class Project {
-    @Column(name = "id")
     private @Id long id;
-    @Column(name = "name")
     private String name;
-    @Column(name = "desc")
     private String description;
-    @ManyToMany
-    private List<User> employees;
+    @OneToMany(mappedBy = "project")
+    Set<ProjectsEmployees> registrations;
 
     public Project(long id, String name, String description) {
         this.id = id;
@@ -49,12 +46,12 @@ public class Project {
         this.description = description;
     }
 
-    public List<User> getEmployees() {
-        return employees;
+    public Set<ProjectsEmployees> getRegistrations() {
+        return registrations;
     }
 
-    public void setEmployees(List<User> employees) {
-        this.employees = employees;
+    public void setRegistrations(Set<ProjectsEmployees> registrations) {
+        this.registrations = registrations;
     }
 }
 

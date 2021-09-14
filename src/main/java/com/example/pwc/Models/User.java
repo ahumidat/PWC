@@ -1,24 +1,21 @@
 package com.example.pwc.Models;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private long ID;
-    @Column(name = "name")
     private String name;
     @ManyToOne
-    @JoinColumn(name = "department",referencedColumnName = "name")
+    @JoinColumn(name="department_id", nullable=false)
     private Department department;
-    @Column(name = "role")
     private String role;
-    @ManyToMany
-    private List<Project> projects;
+    @OneToMany(mappedBy = "user")
+    Set<ProjectsEmployees> projects;
 
 
     public User(long ID, String name, Department department, String role) {
@@ -63,11 +60,11 @@ public class User {
         this.role = role;
     }
 
-    public List<Project> getProjects() {
+    public Set<ProjectsEmployees> getProjects() {
         return projects;
     }
 
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
+    public void setProjects(Set<ProjectsEmployees> registrations) {
+        this.projects = registrations;
     }
 }
