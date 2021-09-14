@@ -5,7 +5,9 @@ import com.example.pwc.Repositories.UserRepository;
 import com.example.pwc.Utils.Role;
 import com.example.pwc.Utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -17,19 +19,15 @@ public class RegistrationController {
     UserRepository userRepo;
 
     @RequestMapping("/submit")
-    public String registerUser(@RequestBody Users user){
-        if(user == null){
-            return "Please fill in username and password";
-        }
+    public Users registerUser(@RequestBody Users user){
        if (userAlreadyExists(user)){
-           return "Username passed is already reserved, please pick another name";
+           throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Please use another email or username");
        }
        if(!validateParams(user)){
-           return "Your input is Invalid, please make sure you filled all required data and that your email is valid";
+           throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Please make sure that you passed a vaild email, and that username and password are filled");
        }
        user.setRole(Role.Employee.name());
-       userRepo.save(user);
-       return "User created successfully";
+       return userRepo.save(user);
     }
 
     private boolean validateParams(Users user) {
