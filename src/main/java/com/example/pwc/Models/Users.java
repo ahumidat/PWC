@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-public class User {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,21 +12,21 @@ public class User {
     private String name;
     private String password;
     @ManyToOne
-    @JoinColumn(name="department_id", nullable=false)
     private Department department;
     private String role;
-    @OneToMany(mappedBy = "user")
-    Set<ProjectsEmployees> projects;
+    @ManyToMany
+    @JoinTable(name = "project_employee_relation", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    Set<Project> projects;
 
 
-    public User(long ID, String name, Department department, String role) {
+    public Users(long ID, String name, Department department, String role) {
         this.ID = ID;
         this.name = name;
         this.department = department;
         this.role = role;
     }
 
-    public User() {
+    public Users() {
     }
 
     public long getID() {
@@ -61,11 +61,19 @@ public class User {
         this.role = role;
     }
 
-    public Set<ProjectsEmployees> getProjects() {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Project> getProjects() {
         return projects;
     }
 
-    public void setProjects(Set<ProjectsEmployees> registrations) {
-        this.projects = registrations;
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
     }
 }

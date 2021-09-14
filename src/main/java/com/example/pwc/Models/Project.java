@@ -9,8 +9,8 @@ public class Project {
     private @Id long id;
     private String name;
     private String description;
-    @OneToMany(mappedBy = "project")
-    Set<ProjectsEmployees> registrations;
+    @ManyToMany(mappedBy = "projects")
+    Set<Users> employees;
 
     public Project(long id, String name, String description) {
         this.id = id;
@@ -44,14 +44,6 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Set<ProjectsEmployees> getRegistrations() {
-        return registrations;
-    }
-
-    public void setRegistrations(Set<ProjectsEmployees> registrations) {
-        this.registrations = registrations;
     }
 }
 

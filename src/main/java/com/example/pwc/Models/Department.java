@@ -9,7 +9,7 @@ public class Department {
     private @Id long id;
     private String name;
     @OneToMany(mappedBy = "department")
-    Set<User> employees;
+    Set<Users> users;
 
     public Department(long id, String name){
         this.name = name;
@@ -34,12 +34,12 @@ public class Department {
         this.name = name;
     }
 
-    public Set<User> getEmployees() {
-        return employees;
+    public Set<Users> getUsers() {
+        return users;
     }
 
-    public void setEmployees(Set<User> registrations) {
-        this.employees = registrations;
+    public void setUsers(Set<Users> registrations) {
+        this.users = registrations;
     }
 
     @Override
