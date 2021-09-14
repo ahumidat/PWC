@@ -14,6 +14,7 @@ public class Users {
     @ManyToOne
     private Department department;
     private String role;
+    private String email;
     @ManyToMany
     @JoinTable(name = "project_employee_relation", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     Set<Project> projects;
@@ -75,5 +76,22 @@ public class Users {
 
     public void setProjects(Set<Project> projects) {
         this.projects = projects;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Users))
+            return false;
+        return ((Users) o).name.equals(this.name) || ((Users) o).email.equals(this.email);
     }
 }
