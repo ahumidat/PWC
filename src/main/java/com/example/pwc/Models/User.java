@@ -10,6 +10,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
     private String name;
+    private String password;
     @ManyToOne
     @JoinColumn(name="department_id", nullable=false)
     private Department department;
