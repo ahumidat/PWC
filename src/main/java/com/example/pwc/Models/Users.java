@@ -15,8 +15,8 @@ public class Users {
     private Department department;
     private String role;
     private String email;
-    @ManyToMany
-    @JoinTable(name = "project_employee_relation", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany( cascade = CascadeType.ALL)
+    @JoinTable(name = "project_employee_relation",joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     Set<Project> projects;
 
 

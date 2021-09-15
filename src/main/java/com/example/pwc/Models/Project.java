@@ -9,7 +9,7 @@ public class Project {
     private @Id long id;
     private String name;
     private String description;
-    @ManyToMany(mappedBy = "projects")
+    @ManyToMany(mappedBy = "projects", cascade = CascadeType.ALL)
     Set<Users> employees;
 
     public Project(long id, String name, String description) {
@@ -44,6 +44,13 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @PreRemove
+    private void removeEducationFromUsersProfile() {
+        for (Users u : employees) {
+            u.getProjects().remove(this);
+        }
     }
 }
 
