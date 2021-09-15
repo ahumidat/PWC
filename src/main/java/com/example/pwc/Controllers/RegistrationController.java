@@ -6,11 +6,13 @@ import com.example.pwc.Utils.Role;
 import com.example.pwc.Utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
+import javax.validation.*;
 import java.util.*;
 
+@PreAuthorize("permitAll()")
 @RestController
 @RequestMapping("/api/v1/rest/register")
 public class RegistrationController {
@@ -19,7 +21,7 @@ public class RegistrationController {
     UserRepository userRepo;
 
     @RequestMapping("/submit")
-    public Users registerUser(@RequestBody Users user){
+    public Users registerUser(@Valid @RequestBody Users user){
        if (userAlreadyExists(user)){
            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Please use another email or username");
        }
