@@ -6,13 +6,11 @@ import com.example.pwc.Utils.Role;
 import com.example.pwc.Utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import javax.validation.*;
 import java.util.*;
 
-@PreAuthorize("permitAll()")
 @RestController
 @RequestMapping("/api/v1/rest/register")
 public class RegistrationController {
@@ -33,7 +31,7 @@ public class RegistrationController {
     }
 
     private boolean validateParams(Users user) {
-        if (ValidationUtils.isEmpty(user.getName()) || ValidationUtils.isEmpty(user.getPassword()) || ValidationUtils.isEmpty(user.getEmail())){
+        if (ValidationUtils.isEmpty(user.getUsername()) || ValidationUtils.isEmpty(user.getPassword()) || ValidationUtils.isEmpty(user.getEmail())){
             return false;
         }
         if(!ValidationUtils.isValidEmail(user.getEmail())){

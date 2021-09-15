@@ -9,7 +9,7 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
-    private String name;
+    private String username;
     private String password;
     @ManyToOne
     private Department department;
@@ -22,7 +22,7 @@ public class Users {
 
     public Users(long ID, String name, Department department, String role) {
         this.ID = ID;
-        this.name = name;
+        this.username = name;
         this.department = department;
         this.role = role;
     }
@@ -38,12 +38,12 @@ public class Users {
         this.ID = ID;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
     public Department getDepartment() {
@@ -92,6 +92,6 @@ public class Users {
             return true;
         if (!(o instanceof Users))
             return false;
-        return ((Users) o).name.equals(this.name) || ((Users) o).email.equals(this.email);
+        return ((Users) o).username.equals(this.username) || ((Users) o).email.equals(this.email);
     }
 }
