@@ -15,4 +15,8 @@ public class ValidationUtils {
         Matcher matcher = EMAIL_PATTERN.matcher(email);
         return matcher.find();
     }
+
+    public static boolean isValidRole(String role){
+        return !isEmpty(role) && (role.equals(Role.Employee.name()) || role.equals(Role.Manager.name()));
+    }
 }

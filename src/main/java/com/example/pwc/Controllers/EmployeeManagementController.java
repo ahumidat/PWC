@@ -1,12 +1,15 @@
 package com.example.pwc.Controllers;
 
+import com.example.pwc.Models.Department;
 import com.example.pwc.Models.Users;
 import com.example.pwc.Repositories.UserRepository;
+import com.example.pwc.Services.DepartmentManagementService;
 import com.example.pwc.Services.EmployeeManagementService;
 import com.example.pwc.Utils.Role;
 import com.example.pwc.Utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,6 +21,8 @@ import java.util.*;
 public class EmployeeManagementController {
     @Autowired
     EmployeeManagementService employeeSvc;
+    @Autowired
+    DepartmentManagementService departmentSvc;
 
     @GetMapping("/list")
     public List<Users> getEmployees(){
@@ -36,12 +41,40 @@ public class EmployeeManagementController {
         return  employeeSvc.saveUser(user);
     }
 
+    @PutMapping("/role/{role}")
+    ResponseEntity<?> updateRole(@RequestBody @Valid Users emp, @PathVariable String role) {
+
+        Users updatedEmployee = employeeSvc.getUserByName(emp.getUsername()) ;
+        if (updatedEmployee == null){
+            return new ResponseEntity<>("This Employee doesn't exist",HttpStatus.NOT_FOUND);
+        }
+        if (! ValidationUtils.isValidRole(role)){
+            return new ResponseEntity<>("Passed role is invalid. Users can be either \'Employee\' or \'Manager\'",HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        updatedEmployee.setRole(role);
+        employeeSvc.saveUser(updatedEmployee);
+        return new ResponseEntity<>("Role updated successfully",HttpStatus.OK);
+    }
+
     private boolean validateParams(Users user) {
         if (ValidationUtils.isEmpty(user.getUsername()) || ValidationUtils.isEmpty(user.getPassword()) || ValidationUtils.isEmpty(user.getEmail())){
             return false;
         }
         if(!ValidationUtils.isValidEmail(user.getEmail())){
             return false;
+        }
+        if (! ValidationUtils.isValidRole(user.getRole())){
+            return false;
+        }
+        if (user.getDepartment() == null){
+            return false;
+        }else{
+            Department departmentEntity = departmentSvc.getByName(user.getDepartment().getName());
+            if ( departmentEntity== null){
+                return false;
+            }else{
+                user.setDepartment(departmentEntity);
+            }
         }
         return true;
     }
