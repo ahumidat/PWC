@@ -35,4 +35,9 @@ public class DepartmentManagementServiceImpl implements DepartmentManagementServ
         }
         return false;
     }
+
+    @Override
+    public Department getByName(String dName) {
+        return departmentRepo.findDepartmentByName(dName);
+    }
 }

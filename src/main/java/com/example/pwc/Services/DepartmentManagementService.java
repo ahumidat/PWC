@@ -7,4 +7,5 @@ public interface DepartmentManagementService {
     public List<Department> getAll();
     public Department create(Department d);
     public boolean delete(Department d);
+    public Department getByName(String dName);
 }

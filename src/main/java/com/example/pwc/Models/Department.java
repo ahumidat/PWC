@@ -6,9 +6,10 @@ import java.util.Set;
 @Entity
 @Table(name = "`Department`")
 public class Department {
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private @Id long id;
     private String name;
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<Users> users;
 
     public Department(long id, String name){

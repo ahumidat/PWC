@@ -1,7 +1,9 @@
 package com.example.pwc.Controllers;
 
+import com.example.pwc.Models.Department;
 import com.example.pwc.Models.Users;
 import com.example.pwc.Repositories.UserRepository;
+import com.example.pwc.Services.DepartmentManagementService;
 import com.example.pwc.Utils.Role;
 import com.example.pwc.Utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.*;
@@ -17,6 +19,8 @@ public class RegistrationController {
 
     @Autowired
     UserRepository userRepo;
+    @Autowired
+    DepartmentManagementService departmentSvc;
 
     @RequestMapping("/submit")
     public Users registerUser(@Valid @RequestBody Users user){
@@ -36,6 +40,16 @@ public class RegistrationController {
         }
         if(!ValidationUtils.isValidEmail(user.getEmail())){
             return false;
+        }
+        if (user.getDepartment() == null){
+            return false;
+        }else{
+            Department departmentEntity = departmentSvc.getByName(user.getDepartment().getName());
+            if ( departmentEntity== null){
+                return false;
+            }else{
+                user.setDepartment(departmentEntity);
+            }
         }
         return true;
     }

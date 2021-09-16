@@ -1,5 +1,7 @@
 package com.example.pwc.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -11,7 +13,8 @@ public class Users {
     private long ID;
     private String username;
     private String password;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JsonIgnoreProperties(value = {"users", "handler","hibernateLazyInitializer"}, allowSetters = true)
     private Department department;
     private String role;
     private String email;
