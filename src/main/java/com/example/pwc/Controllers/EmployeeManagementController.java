@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/rest/employee")
@@ -30,8 +31,23 @@ public class EmployeeManagementController {
     ProjectManagementService projectSvc;
 
     @GetMapping("/list")
-    public List<Users> getEmployees(){
-        return employeeSvc.getAllEmployees();
+    public List<Users> getEmployees(@RequestParam(required = false) String name,@RequestParam(required = false) String email,
+                                   @RequestParam(required = false) String department, @RequestParam(required = false) String project ){
+        List<Users> employees = employeeSvc.getAllEmployees();
+        if(! ValidationUtils.isEmpty(name)){
+            employees = employees.stream().filter(u -> u.getUsername().equals(name)).collect(Collectors.toList());
+        }
+        if (! ValidationUtils.isEmpty(email)){
+            employees = employees.stream().filter(u -> u.getEmail().equalsIgnoreCase(email)).collect(Collectors.toList());
+        }
+        if (! ValidationUtils.isEmpty(department)){
+            employees = employees.stream().filter(u -> u.getDepartment().getName().equalsIgnoreCase(department)).collect(Collectors.toList());
+        }
+        if (! ValidationUtils.isEmpty(project)){
+            Project p = projectSvc.getProjectByName(project);
+            employees = employees.stream().filter(u -> u.getProjects().contains(p)).collect(Collectors.toList());
+        }
+        return employees;
     }
 
     @PostMapping("/create")
