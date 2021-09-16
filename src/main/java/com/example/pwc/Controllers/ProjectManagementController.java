@@ -42,5 +42,33 @@ public class ProjectManagementController {
         }
     }
 
+    @PutMapping("/desc/{desc}")
+    ResponseEntity<?> updateDesc(@RequestBody @Valid Project p, @PathVariable String desc) {
 
+        Project project = projectSvc.getProjectByName(p.getName()) ;
+        if (project == null){
+            return new ResponseEntity<>("This Project doesn't exist",HttpStatus.NOT_FOUND);
+        }
+        if (ValidationUtils.isEmpty(desc)){
+            return new ResponseEntity<>("Passed description is empty.",HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        project.setDescription(desc);
+        projectSvc.create(project);
+        return new ResponseEntity<>("Project description updated successfully",HttpStatus.OK);
+    }
+
+    @PutMapping("/name/{name}")
+    ResponseEntity<?> updateName(@RequestBody @Valid Project p, @PathVariable String name) {
+
+        Project project = projectSvc.getProjectByName(p.getName()) ;
+        if (project == null){
+            return new ResponseEntity<>("This Project doesn't exist",HttpStatus.NOT_FOUND);
+        }
+        if (ValidationUtils.isEmpty(name)){
+            return new ResponseEntity<>("Passed name is empty.",HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        project.setName(name);
+        projectSvc.create(project);
+        return new ResponseEntity<>("Project Name updated successfully",HttpStatus.OK);
+    }
 }

@@ -42,4 +42,19 @@ public class DepartmentManagementController {
             return new ResponseEntity<>("This department doesn't exist",HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/name/{name}")
+    ResponseEntity<?> updateName(@RequestBody @Valid Department d, @PathVariable String name) {
+
+        Department department = svc.getByName(d.getName()) ;
+        if (department == null){
+            return new ResponseEntity<>("This department doesn't exist",HttpStatus.NOT_FOUND);
+        }
+        if (ValidationUtils.isEmpty(name)){
+            return new ResponseEntity<>("Passed name is empty.",HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        department.setName(name);
+        svc.create(department);
+        return new ResponseEntity<>("Department Name updated successfully",HttpStatus.OK);
+    }
 }
