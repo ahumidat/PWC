@@ -210,6 +210,19 @@ public class EmployeeManagementController {
         return true;
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteEmployee(@RequestHeader("authorization") String auth, @Valid @RequestBody Users e){
+        Users u = authenticate.authenticateUser(auth);
+        if (u != null &&  u.getRole().equals(Role.Manager.name())){
+            if (employeeSvc.delete(e)){
+                return new ResponseEntity<>("The project deleted", HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>("This Project doesn't exist",HttpStatus.NOT_FOUND);
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+
     private boolean userAlreadyExists(Users user) {
         List<Users> allUsers = employeeSvc.getAll();
         return allUsers.contains(user);

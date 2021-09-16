@@ -1,5 +1,6 @@
 package com.example.pwc.Services.impl;
 
+import com.example.pwc.Models.Department;
 import com.example.pwc.Models.Users;
 import com.example.pwc.Repositories.UserRepository;
 import com.example.pwc.Services.EmployeeManagementService;
@@ -33,5 +34,15 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     @Override
     public Users saveUser(Users user){
         return userRepo.save(user);
+    }
+
+    @Override
+    public boolean delete(Users user){
+        Users UserEntity = userRepo.findUsersByUsername(user.getUsername());
+        if (UserEntity != null){
+            userRepo.delete(UserEntity);
+            return true;
+        }
+        return false;
     }
 }
