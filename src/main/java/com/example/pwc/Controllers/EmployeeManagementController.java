@@ -100,6 +100,45 @@ public class EmployeeManagementController {
         return new ResponseEntity<>("Project was removed successfully",HttpStatus.OK);
     }
 
+    @PutMapping("/department/update/{depName}")
+    ResponseEntity<?> updateDepartment(@RequestBody @Valid Users emp, @PathVariable String depName){
+        Users updatedEmployee = employeeSvc.getUserByName(emp.getUsername()) ;
+        if (updatedEmployee == null){
+            return new ResponseEntity<>("This Employee doesn't exist",HttpStatus.NOT_FOUND);
+        }
+//        Check Department exists
+        Department d = departmentSvc.getByName(depName);
+        if (d == null){
+            return new ResponseEntity<>("This Department doesn't exist",HttpStatus.NOT_FOUND);
+        }
+
+        if (updatedEmployee.getDepartment().getName().equalsIgnoreCase(depName)){
+            return new ResponseEntity<>("User is already assigned to this department",HttpStatus.NOT_MODIFIED);
+        }
+
+        updatedEmployee.setDepartment(d);
+
+        employeeSvc.saveUser(updatedEmployee);
+        return new ResponseEntity<>("Department was updated successfully",HttpStatus.OK);
+    }
+
+    @PutMapping("/department/remove")
+    ResponseEntity<?> removeDepartment(@RequestBody @Valid Users emp){
+        Users updatedEmployee = employeeSvc.getUserByName(emp.getUsername()) ;
+        if (updatedEmployee == null){
+            return new ResponseEntity<>("This Employee doesn't exist",HttpStatus.NOT_FOUND);
+        }
+
+        if (updatedEmployee.getRole().equals(Role.Employee.name())){
+            return new ResponseEntity<>("Employee must be assigned to department",HttpStatus.FORBIDDEN);
+        }
+
+        updatedEmployee.setDepartment(null);
+
+        employeeSvc.saveUser(updatedEmployee);
+        return new ResponseEntity<>("Department was removed successfully",HttpStatus.OK);
+    }
+
     private boolean validateParams(Users user) {
         if (ValidationUtils.isEmpty(user.getUsername()) || ValidationUtils.isEmpty(user.getPassword()) || ValidationUtils.isEmpty(user.getEmail())){
             return false;
