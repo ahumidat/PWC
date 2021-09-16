@@ -6,6 +6,7 @@ import java.util.*;
 @Entity
 @Table
 public class Project {
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private @Id long id;
     private String name;
     private String description;
@@ -51,6 +52,15 @@ public class Project {
         for (Users u : employees) {
             u.getProjects().remove(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Project))
+            return false;
+        return ((Project) o).name.equals(this.name);
     }
 }
 

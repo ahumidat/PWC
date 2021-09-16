@@ -34,4 +34,9 @@ public class ProjectManagementServiceImpl implements ProjectManagementService {
         }
         return false;
     }
+
+    @Override
+    public Project getProjectByName(String name){
+        return projectRepo.findProjectByName(name);
+    }
 }

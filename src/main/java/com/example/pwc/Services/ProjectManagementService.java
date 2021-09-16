@@ -8,4 +8,5 @@ public interface ProjectManagementService {
     public List<Project> getAll();
     public Project create(Project p);
     public boolean delete(Project p);
+    public Project getProjectByName(String name);
 }
