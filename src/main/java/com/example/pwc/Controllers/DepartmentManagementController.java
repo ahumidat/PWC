@@ -53,7 +53,7 @@ public class DepartmentManagementController {
             if (svc.delete(d)){
                 return new ResponseEntity<>("The department deleted", HttpStatus.OK);
             }else{
-                return new ResponseEntity<>("This department doesn't exist",HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("This department doesn't exist or there are employees in this department",HttpStatus.NOT_ACCEPTABLE);
             }
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);

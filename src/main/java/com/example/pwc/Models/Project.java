@@ -1,5 +1,8 @@
 package com.example.pwc.Models;
 
+import com.example.pwc.Repositories.ProjectRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -10,7 +13,7 @@ public class Project {
     private @Id long id;
     private String name;
     private String description;
-    @ManyToMany(mappedBy = "projects", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "projects")
     Set<Users> employees;
 
     public Project(long id, String name, String description) {
@@ -48,7 +51,7 @@ public class Project {
     }
 
     @PreRemove
-    private void removeEducationFromUsersProfile() {
+    private void removeUSERSFromProject() {
         for (Users u : employees) {
             u.getProjects().remove(this);
         }

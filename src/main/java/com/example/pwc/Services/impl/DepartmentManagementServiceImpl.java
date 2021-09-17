@@ -30,6 +30,9 @@ public class DepartmentManagementServiceImpl implements DepartmentManagementServ
     public boolean delete(Department d) {
         Department departmentEntity = departmentRepo.findDepartmentByName(d.getName());
         if (departmentEntity != null){
+            if (! departmentEntity.getUsers().isEmpty()){
+                return false;
+            }
             departmentRepo.delete(departmentEntity);
             return true;
         }
